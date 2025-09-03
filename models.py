@@ -17,7 +17,6 @@ class WorkerProfile(UserProfile):
     tasks = models.ManyToManyField(Task)
     location = models.OneToOneField(Location, on_delete=models.SET_NULL, null=True)
 
-
     class Meta:
         verbose_name = "Worker Profile"
         verbose_name_plural = "Worker Profiles"
