@@ -12,8 +12,11 @@ class WorkerProfile(UserProfile):
         ('female', 'Femenino'),
     ]
 
-    #: Presentación breve del trabajador (ej: "Niñera con 3 años de experiencia")
-    introduction = models.CharField(max_length=500, blank=True, null=True)
+    location = models.OneToOneField(Location, on_delete=models.SET_NULL, null=True)
+
+    services = models.ManyToManyField(Service)
+
+    tasks = models.ManyToManyField(Task)
 
     #: Fecha de nacimiento del trabajador
     date_of_birth = models.DateField(null=True, blank=True)
@@ -21,12 +24,7 @@ class WorkerProfile(UserProfile):
     #: Género (Masculino / Femenino), opcional
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
 
-    #: Nacionalidad del trabajador (ej: "Argentina")
-    nationality = models.CharField(max_length=100, blank=True, null=True)
 
-
-    #: Servicios que ofrece (ej: niñera, limpieza, cocina)
-    services = models.ManyToManyField(Service)
 
     class Meta:
         verbose_name = "Worker Profile"
