@@ -1,27 +1,43 @@
 from django.db import models
+from base.models import UserProfile, Language, Service, Task, Location
 
-# Perfil del trabajador
+# Perfil del trabajador:
+# Representa la "tarjeta" que un trabajador publica en la plataforma.
+# Incluye datos personales, su presentación, servicios ofrecidos, tareas y ubicación.
 class WorkerProfile(UserProfile):
 
+    # Opciones de género para los perfiles
     GENDER_CHOICES = [
-        ('male', 'Masculino'), 
-        ('female', 'Femenino'), 
+        ('male', 'Masculino'),
+        ('female', 'Femenino'),
     ]
 
+    #: Presentación breve del trabajador (ej: "Niñera con 3 años de experiencia")
     introduction = models.CharField(max_length=500, blank=True, null=True)
+
+    #: Fecha de nacimiento del trabajador
     date_of_birth = models.DateField(null=True, blank=True)
+
+    #: Género (Masculino / Femenino), opcional
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
+
+    #: Nacionalidad del trabajador (ej: "Argentina")
     nationality = models.CharField(max_length=100, blank=True, null=True)
-    languages = models.ManyToManyField(Language, through='WorkerLanguage')
+
+
+    #: Servicios que ofrece (ej: niñera, limpieza, cocina)
     services = models.ManyToManyField(Service)
-    tasks = models.ManyToManyField(Task)
-    location = models.OneToOneField(Location, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "Worker Profile"
         verbose_name_plural = "Worker Profiles"
-    
+
     def save(self, *args, **kwargs):
+        """
+        Sobrescribe el método save estándar de Django.
+        Actualmente no agrega lógica extra, 
+        pero puede extenderse en el futuro (ej: validaciones personalizadas).
+        """
         super(WorkerProfile, self).save(*args, **kwargs)
 
 
