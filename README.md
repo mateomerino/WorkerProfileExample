@@ -22,7 +22,7 @@ Un flujo común es cuando el usuario añade una nueva experiencia laboral y, ade
 3) Si los datos son válidos, crea un registro en la tabla WorkerProfileExperience asociado al perfil.
 
 ## 📤 Response (201 Created)
-```json
+```http
 {
   "id": 15,
   "title": "Niñera part-time",
