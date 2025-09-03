@@ -4,7 +4,7 @@
 La aplicación permite que un usuario trabajador (niñera, ama de casa, cocinero/a, etc.) publique su perfil en la plataforma. Ese perfil (WorkerProfile) incluye su presentación, disponibilidad, educación, formación y experiencias previas.
 Un flujo común es cuando el usuario añade una nueva experiencia laboral y, además, actualiza parte de la información general de su perfil.
 
-## Paso 1: añadir experiencia
+### Paso 1: añadir experiencia
 
 1) El frontend envía un POST a /worker/<profile_id>/experience/add/ con los datos de la nueva experiencia.
 ```json
@@ -14,14 +14,14 @@ Un flujo común es cuando el usuario añade una nueva experiencia laboral y, ade
   "currently_working": false
 }
 ```
-2) El backend valida la solicitud con el serializer WorkerProfileExperienceSerializer, que comprueba que:
+#### 2) El backend valida la solicitud con el serializer WorkerProfileExperienceSerializer, que comprueba que:
 
     -title tenga ≤ 80 caracteres
     -description tenga ≤ 400 caracteres
 
-3) Si los datos son válidos, crea un registro en la tabla WorkerProfileExperience asociado al perfil.
+#### 3) Si los datos son válidos, crea un registro en la tabla WorkerProfileExperience asociado al perfil.
 
-## 📤 Response (201 Created)
+#### 📤 Response (201 Created)
 ```http
 {
   "id": 15,
@@ -31,9 +31,9 @@ Un flujo común es cuando el usuario añade una nueva experiencia laboral y, ade
   "worker": 7
 }
 ```
-## Paso 2: actualizar información del perfil
+### Paso 2: actualizar información del perfil
 
-1) El frontend envía un PUT a /worker/<profile_id>/info/update/ con los datos actualizados del perfil, por ejemplo la ubicación.
+#### 1) El frontend envía un PUT a /worker/<profile_id>/info/update/ con los datos actualizados del perfil, por ejemplo la ubicación.
 
 📥 Request
 ```json
@@ -43,15 +43,15 @@ Un flujo común es cuando el usuario añade una nueva experiencia laboral y, ade
   "province": 10
 }
 ```
-2) El backend procesa esos datos:
+#### 2) El backend procesa esos datos:
 
     -Si el perfil ya tenía una Location, la actualiza.
     
     -Si no, crea una nueva Location y la asigna al WorkerProfile.
 
-3) Luego actualiza el perfil y devuelve el JSON completo serializado con WorkerProfileSerializer.
+#### 3) Luego actualiza el perfil y devuelve el JSON completo serializado con WorkerProfileSerializer.
 
-📤 Response (200 OK)
+#### 📤 Response (200 OK)
 ```json
 {
   "id": 7,
@@ -80,7 +80,7 @@ Un flujo común es cuando el usuario añade una nueva experiencia laboral y, ade
 }
 ```
 
-Qué asegura el backend en este proceso
+## Qué asegura el backend en este proceso
 
 Validación previa: no se persisten datos inválidos.
 
