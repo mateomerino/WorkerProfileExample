@@ -1,8 +1,9 @@
 from django.urls import path
-from .views_worker import WorkerProfileExperienceView
-from .views_worker import WorkerProfileInfoView
+from .views_worker import WorkerProfileExperienceView, WorkerProfileInfoView
 
-# Ruta para crear una nueva experiencia dentro de un WorkerProfile y para actualizar información general de un WorkerProfile
+# Rutas disponibles para WorkerProfile:
+# - Añadir experiencias laborales
+# - Actualizar información general (incluyendo ubicación)
 urlpatterns = [
     path('<int:profile_id>/experience/add/', WorkerProfileExperienceView.as_view(),
          name='add-worker-profile-experience'),
