@@ -13,8 +13,6 @@ class WorkerProfileSerializer(serializers.ModelSerializer):
     location = LocationSerializer(read_only=True)
     services = ServiceSerializer(many=True, read_only=True)
     tasks = TaskSerializer(many=True, read_only=True)
-    work_arrangements = WorkArrangementSerializer(many=True, read_only=True)
-    work_shifts = ShiftSerializer(many=True, read_only=True)
     user = CustomUserSerializer(read_only=True)
 
     class Meta:
