@@ -13,7 +13,7 @@ Un flujo común es cuando el usuario añade una nueva experiencia laboral y, ade
   "description": "Cuidado de dos niños pequeños, preparación de comidas y actividades educativas.",
   "currently_working": false
 }
-
+```
 2) El backend valida la solicitud con el serializer WorkerProfileExperienceSerializer, que comprueba que:
 
     -title tenga ≤ 80 caracteres
@@ -30,7 +30,7 @@ Un flujo común es cuando el usuario añade una nueva experiencia laboral y, ade
   "currently_working": false,
   "worker": 7
 }
-
+```
 ## Paso 2: actualizar información del perfil
 
 1) El frontend envía un PUT a /worker/<profile_id>/info/update/ con los datos actualizados del perfil, por ejemplo la ubicación.
@@ -42,7 +42,7 @@ Un flujo común es cuando el usuario añade una nueva experiencia laboral y, ade
   "municipality": 1021,
   "province": 10
 }
-
+```
 2) El backend procesa esos datos:
 
     -Si el perfil ya tenía una Location, la actualiza.
@@ -78,7 +78,7 @@ Un flujo común es cuando el usuario añade una nueva experiencia laboral y, ade
     { "id": 2, "value": "part_time", "value_display": "Part time" }
   ]
 }
-
+```
 
 Qué asegura el backend en este proceso
 
