@@ -1,7 +1,26 @@
 # Interacciones clave: WorkerProfile
+
+## Descripción de la arquitectura
+
+La aplicación sigue el patrón Django REST Framework (DRF), donde cada capa cumple un rol específico:
+
+Models: representan las tablas en la base de datos (por ejemplo, WorkerProfile y WorkerProfileExperience).
+
+Managers / QuerySets: encapsulan lógica de acceso a datos, como búsquedas y actualizaciones específicas (get_profile_by_id, update_profile_info).
+
+Serializers: transforman los modelos en JSON y validan datos entrantes desde el frontend (WorkerProfileSerializer, WorkerProfileExperienceSerializer).
+
+Views: definen los endpoints de la API y coordinan el flujo (reciben requests, usan managers para la lógica de negocio, y serializers para validar/serializar).
+
+URLs: mapean cada endpoint HTTP hacia la view correspondiente.
+
+Este diseño separa responsabilidades y asegura que el código sea escalable y fácil de mantener.
+
 ## Contexto
 
-La aplicación permite que un usuario trabajador (niñera, ama de casa, cocinero/a, etc.) publique su perfil en la plataforma. Ese perfil (WorkerProfile) incluye su presentación, disponibilidad, educación, formación y experiencias previas.
+La aplicación permite que un usuario trabajador (niñera, ama de casa, cocinero/a, etc.) publique su perfil en la plataforma.
+Ese perfil (WorkerProfile) incluye datos como ubicación, servicios ofrecidos, tareas, disponibilidad horaria, educación, formación y experiencias previas.
+
 Un flujo común es cuando el usuario añade una nueva experiencia laboral y, además, actualiza parte de la información general de su perfil.
 
 ### Paso 1: añadir experiencia
@@ -33,7 +52,10 @@ Un flujo común es cuando el usuario añade una nueva experiencia laboral y, ade
 ```
 ### Paso 2: actualizar información del perfil
 
-#### 1) El frontend envía un PUT a /worker/<profile_id>/info/update/ con los datos actualizados del perfil, por ejemplo la ubicación.
+#### 1) El frontend envía un PUT a /worker/<profile_id>/info/update/ con los datos actualizados del perfil, por ejemplo ubicación
+```http
+PUT /worker/<profile_id>/info/update/
+```
 
 📥 Request
 ```json
