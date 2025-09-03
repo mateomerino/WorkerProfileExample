@@ -1,26 +1,102 @@
-## Interacciones clave: WorkerProfile
-# Contexto
+# Interacciones clave: WorkerProfile
+## Contexto
 
-La plataforma conecta empleadores con trabajadores (niñera, ama de casa, cocinero/a, etc.).
-Cada trabajador tiene un WorkerProfile con su presentación, disponibilidad horaria, educación y experiencias laborales.
-Flujo típico: el usuario (worker) añade una experiencia y el backend la crea y, si corresponde, actualiza datos del perfil (p. ej., ubicación).
+La aplicación permite que un usuario trabajador (niñera, ama de casa, cocinero/a, etc.) publique su perfil en la plataforma. Ese perfil (WorkerProfile) incluye su presentación, disponibilidad, educación, formación y experiencias previas.
+Un flujo común es cuando el usuario añade una nueva experiencia laboral y, además, actualiza parte de la información general de su perfil.
 
-flowchart TD
-    A[Frontend: Worker autenticado] --> B[POST /worker/:profile_id/experience/add/]
-    B --> C[API: WorkerProfileExperienceView.post]
-    C --> D[Serializer: valida title/description/currently_working]
-    D --> E{Valido?}
-    E -- No --> F[400 con errores de validación]
-    E -- Sí --> G[DB: crea WorkerProfileExperience (FK a profile_id)]
-    G --> H[201 con JSON de la experiencia creada]
-    H --> I[Frontend actualiza UI: lista de experiencias]
+## Paso 1: añadir experiencia
 
-    I --> J[Opcional: PUT /worker/:profile_id/info/update/]
-    J --> K[API: WorkerProfileInfoView.put]
-    K --> L{Trae datos de ubicación?}
-    L -- Sí --> M[DB: crea/actualiza Location (OneToOne)]
-    L -- No --> N[Sin cambios en Location]
-    M --> O[DB: actualiza WorkerProfile con nuevos datos]
-    N --> O[DB: actualiza WorkerProfile con otros campos]
-    O --> P[200 con JSON del perfil actualizado]
-    P --> Q[Frontend refresca sección de perfil]
+1) El frontend envía un POST a /worker/<profile_id>/experience/add/ con los datos de la nueva experiencia.
+```json
+{
+  "title": "Niñera part-time",
+  "description": "Cuidado de dos niños pequeños, preparación de comidas y actividades educativas.",
+  "currently_working": false
+}
+
+2) El backend valida la solicitud con el serializer WorkerProfileExperienceSerializer, que comprueba que:
+
+    -title tenga ≤ 80 caracteres
+    -description tenga ≤ 400 caracteres
+
+3) Si los datos son válidos, crea un registro en la tabla WorkerProfileExperience asociado al perfil.
+
+## 📤 Response (201 Created)
+```json
+{
+  "id": 15,
+  "title": "Niñera part-time",
+  "description": "Cuidado de dos niños pequeños, preparación de comidas y actividades educativas.",
+  "currently_working": false,
+  "worker": 7
+}
+
+## Paso 2: actualizar información del perfil
+
+1) El frontend envía un PUT a /worker/<profile_id>/info/update/ con los datos actualizados del perfil, por ejemplo la ubicación.
+
+📥 Request
+```json
+{
+  "neighborhood": "Cofico",
+  "municipality": 1021,
+  "province": 10
+}
+
+2) El backend procesa esos datos:
+
+    -Si el perfil ya tenía una Location, la actualiza.
+    
+    -Si no, crea una nueva Location y la asigna al WorkerProfile.
+
+3) Luego actualiza el perfil y devuelve el JSON completo serializado con WorkerProfileSerializer.
+
+📤 Response (200 OK)
+```json
+{
+  "id": 7,
+  "introduction": "Niñera con 3 años de experiencia en cuidado infantil.",
+  "hour_price": 2500,
+  "location": {
+    "neighborhood": "Cofico",
+    "municipality": {
+      "id": 1021,
+      "name": "Capital"
+    },
+    "province": {
+      "id": 10,
+      "name": "Córdoba"
+    }
+  },
+  "services": [
+    { "id": 1, "title": "babysitter", "title_display": "Niñera" }
+  ],
+  "tasks": [
+    { "id": 4, "title": "childcare", "title_display": "Cuidado de bebés y niños/as" }
+  ],
+  "work_arrangements": [
+    { "id": 2, "value": "part_time", "value_display": "Part time" }
+  ]
+}
+
+
+Qué asegura el backend en este proceso
+
+Validación previa: no se persisten datos inválidos.
+
+Integridad: cada experiencia queda ligada al WorkerProfile correcto.
+
+Consistencia: si la ubicación cambia, se actualiza la relación Location sin duplicar registros.
+
+Respuestas claras:
+
+201 Created con la nueva experiencia
+
+200 OK con el perfil actualizado
+
+400/404 en caso de errores
+
+
+
+
+
