@@ -14,7 +14,7 @@ La aplicación sigue el patrón Django REST Framework (DRF), donde cada capa cum
 
 **Models:** representan las tablas en la base de datos (por ejemplo, WorkerProfile y WorkerProfileExperience).
 
-**Managers:** encapsulan lógica de acceso a datos, como búsquedas y actualizaciones específicas (get_profile_by_id, update_profile_info).
+**Managers:** encapsulan lógica de acceso a datos, como búsquedas y actualizaciones específicas (_get_profile_by_id, update_profile_info_).
 
 **Serializers:** transforman los modelos en JSON y validan datos entrantes desde el frontend (WorkerProfileSerializer, WorkerProfileExperienceSerializer).
 
