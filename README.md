@@ -26,7 +26,7 @@ Este diseño separa responsabilidades y asegura que el código sea escalable y f
 
 ### Paso 1: añadir experiencia
 
-#### 1) El frontend envía un POST a _/worker/<profile_id>/experience/add/ _ con los datos de la nueva experiencia.
+#### 1) El frontend envía un POST a _/worker/<profile_id>/experience/add/_ con los datos de la nueva experiencia.
 ```json
 {
   "title": "Niñera part-time",
