@@ -26,7 +26,7 @@ Este diseño separa responsabilidades y asegura que el código sea escalable y f
 
 ### Paso 1: añadir experiencia
 
-1) El frontend envía un POST a /worker/<profile_id>/experience/add/ con los datos de la nueva experiencia.
+#### 1) El frontend envía un POST a _/worker/<profile_id>/experience/add/ _ con los datos de la nueva experiencia.
 ```json
 {
   "title": "Niñera part-time",
@@ -53,7 +53,7 @@ Este diseño separa responsabilidades y asegura que el código sea escalable y f
 ```
 ### Paso 2: actualizar información del perfil
 
-#### 1) El frontend envía un PUT a /worker/<profile_id>/info/update/ con los datos actualizados del perfil, por ejemplo ubicación
+#### 1) El frontend envía un PUT a _/worker/<profile_id>/info/update/_ con los datos actualizados del perfil, por ejemplo ubicación
 ```http
 PUT /worker/<profile_id>/info/update/
 ```
